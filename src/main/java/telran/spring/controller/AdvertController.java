@@ -8,7 +8,6 @@ import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import telran.spring.model.Advert;
 import telran.spring.service.AdvertService;
-
 import java.util.List;
 
 @RestController
