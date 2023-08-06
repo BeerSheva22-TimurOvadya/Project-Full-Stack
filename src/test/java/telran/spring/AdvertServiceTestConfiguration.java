@@ -20,7 +20,6 @@ public class AdvertServiceTestConfiguration {
 
 		@Override
 		public Advert addAdvert(Advert advert) {
-
 			return advert;
 		}
 
