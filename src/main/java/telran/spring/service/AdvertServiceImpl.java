@@ -1,16 +1,8 @@
 package telran.spring.service;
 
 import org.springframework.stereotype.Service;
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import jakarta.annotation.PostConstruct;
-import jakarta.annotation.PreDestroy;
 import lombok.extern.slf4j.Slf4j;
 import telran.spring.model.Advert;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -21,13 +13,12 @@ public class AdvertServiceImpl implements AdvertService {
 	private Map<String, List<Advert>> advertsByCategory = new HashMap<>();
 	private TreeMap<Double, List<Advert>> advertsByPrice = new TreeMap<>();
 
-	private static final String FILE_NAME = "adverts.json";
+	
 
 	public Advert addAdvert(Advert advert) {
 		int id = generateUniqueId();
-
 		addAdvertToMaps(id, advert);
-		log.info("Adding advert: " + advert);
+		log.debug("Adding advert: " + advert);
 		return advert;
 	}
 
@@ -57,11 +48,11 @@ public class AdvertServiceImpl implements AdvertService {
 	}
 
 	private Integer generateUniqueId() {
-		Integer id;
-		do {
-			id = ThreadLocalRandom.current().nextInt(100000, 1000000);
-		} while (advertsById.containsKey(id));
-		return id;
+	    Integer id;
+	    do {
+	        id = 100000 + (int) (Math.random() * 999999);	        
+	    } while (advertsById.containsKey(id));
+	    return id;
 	}
 
 	public Advert editAdvert(int id, Advert advert) {
@@ -95,31 +86,6 @@ public class AdvertServiceImpl implements AdvertService {
 		advertsByPrice.clear();
 	}
 
-	@PostConstruct
-	public void init() {
-		File file = new File(FILE_NAME);
-		if (file.exists()) {
-			ObjectMapper objectMapper = new ObjectMapper();
-			try {
-				List<Advert> adverts = objectMapper.readValue(file,
-						objectMapper.getTypeFactory().constructCollectionType(List.class, Advert.class));
-				addAdverts(adverts);
-				log.info("Adverts have been loaded successfully");
-			} catch (IOException e) {
-				log.error("Failed to load adverts: ", e);
-			}
-		}
-	}
-
-	@PreDestroy
-	public void shutdown() {
-		ObjectMapper objectMapper = new ObjectMapper();
-		try {
-			objectMapper.writeValue(new File(FILE_NAME), getAllAdverts());
-			log.info("Adverts have been saved successfully");
-		} catch (IOException e) {
-			log.error("Failed to save adverts: ", e);
-		}
-	}
+	
 
 }

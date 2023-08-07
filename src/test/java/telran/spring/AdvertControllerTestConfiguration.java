@@ -8,7 +8,7 @@ import telran.spring.model.Advert;
 import telran.spring.service.AdvertService;
 
 @TestConfiguration
-public class AdvertServiceTestConfiguration {
+public class AdvertControllerTestConfiguration {
 	public static int TEST_ID = 888888;
 
 	@Bean
@@ -35,7 +35,6 @@ public class AdvertServiceTestConfiguration {
 
 		@Override
 		public List<Advert> getAdvertsByPrice(double maxPrice) {
-
 			return Arrays.asList(new Advert(TEST_ID, "test", "test", maxPrice, null));
 		}
 

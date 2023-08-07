@@ -24,12 +24,14 @@ import java.util.Arrays;
 import java.util.List;
 
 @WebMvcTest({ AdvertController.class })
-@Import(AdvertServiceTestConfiguration.class)
+@Import(AdvertControllerTestConfiguration.class)
 class AdvertControllerTest {
 	@Autowired
 	MockMvc mockMvc;
+	
 	@Autowired
 	ObjectMapper mapper;
+	
 	Advert advert;
 	String advertsUrl = "http://localhost:8080/adverts";
 	String categoryUrl = String.format("%s/category/test", advertsUrl);
@@ -37,7 +39,7 @@ class AdvertControllerTest {
 
 	@BeforeEach
 	void setUp() {
-		advert = new Advert(AdvertServiceTestConfiguration.TEST_ID, "test", "test", 100, null);
+		advert = new Advert(AdvertControllerTestConfiguration.TEST_ID, "test", "test", 100, null);
 	}
 
 	@Test
@@ -70,13 +72,13 @@ class AdvertControllerTest {
 	@Test
 	void editAdvertTest() throws Exception {
 		String advertJson = mapper.writeValueAsString(advert);
-		mockMvc.perform(put(advertsUrl + "/" + AdvertServiceTestConfiguration.TEST_ID)
+		mockMvc.perform(put(advertsUrl + "/" + AdvertControllerTestConfiguration.TEST_ID)
 				.contentType(MediaType.APPLICATION_JSON).content(advertJson)).andDo(print()).andExpect(status().isOk());
 	}
 
 	@Test
 	void deleteAdvertTest() throws Exception {
-		mockMvc.perform(delete(advertsUrl + "/" + AdvertServiceTestConfiguration.TEST_ID)).andDo(print())
+		mockMvc.perform(delete(advertsUrl + "/" + AdvertControllerTestConfiguration.TEST_ID)).andDo(print())
 				.andExpect(status().isOk());
 	}
 
